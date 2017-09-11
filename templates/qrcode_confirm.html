@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>QR CODE 確認ページ</title>
+</head>
+<body>
+    <p>{{ data.contact.name }}</p>
+    {% if data.premium_distribution_ok %}
+    <p>既にお渡ししております。</p>
+    {% else %}
+    <p>景品をお渡ししてください。</p>
+    {% endif %}
+</body>
+</html>
