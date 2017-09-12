@@ -126,6 +126,15 @@ class Datasets(EinsteinVisionApi):
         }
         return self.post_proggress(req_url, fields)
 
+    def path_upload(self, path, name):
+        req_url = '/vision/datasets/upload/sync'
+        fields = {
+            'name': name,
+            'type': 'image',
+            'path': path,
+        }
+        return self.post_requests(req_url, fields)
+
     def put(self, datasets_id, path):
         """Adds to Dataset From a Zip File"""
         if not os.path.isfile(path):

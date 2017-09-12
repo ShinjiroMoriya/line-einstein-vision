@@ -17,14 +17,14 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         path = options.get('path')
         name = options.get('name')
-        if os.path.isfile(path):
-            result = self.datasets.upload(path=path, name=name)
+        try:
+            result = self.datasets.path_upload(path=path, name=name)
             print(json_dumps(result))
             datasets_id = result.get('id')
             name = result.get('name')
             result = self.train.create(
                 datasets_id=str(datasets_id), name=str(name))
             print(json_dumps(result))
-
-        else:
-            print('File does not exist')
+        except Exception as ex:
+            print(ex)
+            pass

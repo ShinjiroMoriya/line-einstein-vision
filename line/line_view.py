@@ -37,6 +37,10 @@ class LineCallbackView(View):
                 label_name = 'ドラえもん'
             elif label == 'kitty':
                 label_name = 'キティーちゃん'
+            elif label == 'friend_01':
+                label_name = 'アストロくん'
+            elif label == 'friend_02':
+                label_name = 'キツネ'
             else:
                 label_name = ''
 
@@ -49,6 +53,9 @@ class LineCallbackView(View):
                     return label_name + 'です。(' + probability + ')'
                 elif label == 'kitty':
                     contact.update(character_03_ok=True)
+                    return label_name + 'です。(' + probability + ')'
+                elif label == 'friend_01':
+                    contact.update(character_01_ok=True)
                     return label_name + 'です。(' + probability + ')'
                 return ''
             else:
