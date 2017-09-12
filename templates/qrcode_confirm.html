@@ -17,5 +17,13 @@
         <input type="submit" value="配布する">
     </form>
     {% endif %}
+    <p>投稿した画像</p>
+    <ul style="width: 320px; margin: 0; padding: 0;">
+        {% for image in data.images %}
+        <li style="list-type: none; margin: 0 0 10px 0">
+            <img src="{{ image }}" alt="" style="width: 100%; height: auto;">
+        </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>

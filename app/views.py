@@ -27,20 +27,35 @@ class CallbackView(LineCallbackView):
                 SfContact.create(line_id)
 
             if isinstance(event, MessageEvent):
+
+                c = SfContact.get_by_line_id(line_id)
+
                 if event.message.type == 'text':
-                    line_bot_api.reply_message(
-                        event.reply_token,
-                        TextSendMessage(
-                            text='画像をアップロードしてください。'
+
+                    if event.message.text == 'リセット':
+                        c.update(character_01_ok=False,
+                                 character_02_ok=False,
+                                 character_03_ok=False,
+                                 premium_distribution_ok=False)
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(
+                                text='リセットしました。'
+                            )
                         )
-                    )
+
+                    else:
+                        line_bot_api.reply_message(
+                            event.reply_token,
+                            TextSendMessage(
+                                text='画像をアップロードしてください。'
+                            )
+                        )
 
                 if event.message.type == 'image':
                     message_content = line_bot_api.get_message_content(
                         event.message.id)
                     try:
-                        c = SfContact.get_by_line_id(line_id)
-
                         if c.premium_distribution_ok is False:
                             SfContact.image_upload_by_line_id(
                                 line_id,
@@ -102,14 +117,16 @@ class QrcodeView(View):
         if decode_data is None:
             return render(request, 'qrcode_bad_signature.html')
 
-        contact_obj = SfContact.get_obj_by_line_id(decode_data.get('line_id'))
-        contact_data = contact_obj.first()
+        contact = SfContact.get_by_line_id(decode_data.get('line_id'))
+
+        images = contact.image_path.split('\n')
 
         data = {
-            'contact': contact_data,
+            'contact': contact,
+            'images': images,
         }
 
-        if contact_data.premium_distribution_ok is True:
+        if contact.premium_distribution_ok is True:
             data.update({
                 'premium_distribution_ok': True,
             })
@@ -122,8 +139,7 @@ class QrcodeView(View):
         if decode_data is None:
             return render(request, 'qrcode_bad_signature.html')
 
-        contact_obj = SfContact.get_obj_by_line_id(decode_data.get('line_id'))
-
-        contact_obj.update(premium_distribution_ok=True)
+        contact = SfContact.get_by_line_id(decode_data.get('line_id'))
+        contact.update(premium_distribution_ok=True)
 
         return redirect('/qr/' + encode_id)
