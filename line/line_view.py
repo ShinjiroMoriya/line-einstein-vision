@@ -27,7 +27,7 @@ class LineCallbackView(View):
             request.META['HTTP_X_LINE_SIGNATURE'])
 
     @staticmethod
-    def get_message_reply_by_predict_label(line_id, result_lists):
+    def get_predict_result(line_id, result_lists):
         result_list = result_lists[0]
         probability = result_list.get('probability', '')
 

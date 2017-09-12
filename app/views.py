@@ -39,26 +39,37 @@ class CallbackView(LineCallbackView):
                     message_content = line_bot_api.get_message_content(
                         event.message.id)
                     try:
-                        SfContact.image_upload_by_line_id(
-                            line_id, message_content.content, event.message.id)
-                        result = self.predict.base64(
-                            b64encode(message_content.content))
-                        reply_text = self.get_message_reply_by_predict_label(
-                            line_id,
-                            result.get('probabilities'))
-
-                        line_bot_api.reply_message(
-                            event.reply_token,
-                            TextSendMessage(
-                                text=reply_text
-                            )
-                        )
                         c = SfContact.get_by_line_id(line_id)
+
+                        if c.premium_distribution_ok is False:
+                            SfContact.image_upload_by_line_id(
+                                line_id,
+                                message_content.content,
+                                event.message.id)
+                            result = self.predict.base64(
+                                b64encode(message_content.content))
+                            reply_text = self.get_predict_result(
+                                line_id,
+                                result.get('probabilities'))
+                            line_bot_api.reply_message(
+                                event.reply_token,
+                                TextSendMessage(
+                                    text=reply_text
+                                )
+                            )
+                        else:
+                            line_bot_api.reply_message(
+                                event.reply_token,
+                                TextSendMessage(
+                                    text='ご利用ありがとうございました。'
+                                )
+                            )
 
                         if (
                             c.character_01_ok is True and
                             c.character_02_ok is True and
-                            c.character_03_ok is True
+                            c.character_03_ok is True and
+                            c.premium_distribution_ok is False
                         ):
                             urls = self.get_qrcode(line_id)
                             line_bot_api.push_message(
