@@ -65,6 +65,8 @@ class CallbackView(LineCallbackView):
                                 )
                             )
 
+                        c = SfContact.get_by_line_id(line_id)
+
                         if (
                             c.character_01_ok is True and
                             c.character_02_ok is True and
