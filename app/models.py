@@ -65,7 +65,7 @@ class SfContact(models.Model):
         if not file_names:
             update_file = file_name
         else:
-            update_file = file_names + ',' + file_name
+            update_file = file_names + '\n' + file_name
 
         data_obj.update(image_path=update_file)
 
