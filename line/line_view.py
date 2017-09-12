@@ -27,24 +27,34 @@ class LineCallbackView(View):
 
     @staticmethod
     def get_predict_result(result_lists, contact):
-        result_list = result_lists[0]
-        probability = result_list.get('probability', '')
-
-        if result_list.get('probability') > 0.7:
+        try:
+            result_list = result_lists[0]
+            probability = str(result_list.get('probability', ''))
             label = result_list.get('label')
             if label == 'anpanman':
-                contact.update(character_01_ok=True)
-                return 'アンパンマンです。(' + str(probability) + ')'
+                label_name = 'アンパンマン'
             elif label == 'doraemon':
-                contact.update(character_02_ok=True)
-                return 'ドラえもんです。(' + str(probability) + ')'
+                label_name = 'ドラえもん'
             elif label == 'kitty':
-                contact.update(character_03_ok=True)
-                return 'キティーちゃんです。(' + str(probability) + ')'
+                label_name = 'キティーちゃん'
+            else:
+                label_name = ''
 
-            return ''
-        else:
-            return '画像の認識ができませんでした。(' + str(probability) + ')'
+            if result_list.get('probability') > 0.8:
+                if label == 'anpanman':
+                    contact.update(character_01_ok=True)
+                    return label_name + 'です。(' + probability + ')'
+                elif label == 'doraemon':
+                    contact.update(character_02_ok=True)
+                    return label_name + 'です。(' + probability + ')'
+                elif label == 'kitty':
+                    contact.update(character_03_ok=True)
+                    return label_name + 'です。(' + probability + ')'
+                return ''
+            else:
+                return label_name + 'かも？(' + probability + ')'
+        except:
+            return '画像の認識ができませんでした。'
 
     @staticmethod
     def get_qrcode(line_id):
