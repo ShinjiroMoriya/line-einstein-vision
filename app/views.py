@@ -49,8 +49,7 @@ class CallbackView(LineCallbackView):
                             result = self.predict.base64(
                                 b64encode(message_content.content))
                             reply_text = self.get_predict_result(
-                                line_id,
-                                result.get('probabilities'))
+                                result.get('probabilities'), c)
                             line_bot_api.reply_message(
                                 event.reply_token,
                                 TextSendMessage(
@@ -65,7 +64,7 @@ class CallbackView(LineCallbackView):
                                 )
                             )
 
-                        c = SfContact.get_by_line_id(line_id)
+                        c.reload()
 
                         if (
                             c.character_01_ok is True and

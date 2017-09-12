@@ -5,7 +5,6 @@ from django.utils.decorators import method_decorator
 from django.conf import settings as st
 from line.utilities import parser
 from line.einstein_vision import Predict
-from app.models import SfContact
 from line.cloudinary import set_image_upload, get_url
 from line.service import jwt_encode
 import qrcode
@@ -27,11 +26,9 @@ class LineCallbackView(View):
             request.META['HTTP_X_LINE_SIGNATURE'])
 
     @staticmethod
-    def get_predict_result(line_id, result_lists):
+    def get_predict_result(result_lists, contact):
         result_list = result_lists[0]
         probability = result_list.get('probability', '')
-
-        contact = SfContact.get_obj_by_line_id(line_id)
 
         if result_list.get('probability') > 0.7:
             label = result_list.get('label')

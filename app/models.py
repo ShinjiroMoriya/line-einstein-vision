@@ -68,3 +68,10 @@ class SfContact(models.Model):
             update_file = file_names + ',' + file_name
 
         data_obj.update(image_path=update_file)
+
+    def reload(self):
+        new_self = self.__class__.objects.get(pk=self.pk)
+        self.__dict__.update(new_self.__dict__)
+
+    def update(self, **data):
+        self.__class__.objects.filter(pk=self.pk).update(**data)
