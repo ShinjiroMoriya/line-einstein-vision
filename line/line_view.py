@@ -54,7 +54,7 @@ class LineCallbackView(View):
         line_id_encode = jwt_encode({
             'line_id': line_id
         })
-        img = qrcode.make(st.URL + '/qr?id=' + line_id_encode)
+        img = qrcode.make(st.URL + '/qr/' + line_id_encode)
         img_path = os.path.join(st.PROJECT_ROOT, 'qr_img.png')
         img.save(img_path)
         res = set_image_upload(img_path)

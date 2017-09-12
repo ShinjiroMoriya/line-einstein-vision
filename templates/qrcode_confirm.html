@@ -13,6 +13,10 @@
     <p>既にお渡ししております。</p>
     {% else %}
     <p>景品をお渡ししてください。</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="配布する">
+    </form>
     {% endif %}
 </body>
 </html>

@@ -1,6 +1,6 @@
 from base64 import b64encode
 from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from app.models import SfContact
 from line.service import jwt_decode
 from line.utilities import line_bot_api
@@ -85,8 +85,7 @@ class CallbackView(LineCallbackView):
 
 class QrcodeView(View):
     @staticmethod
-    def get(request):
-        encode_id = request.GET.get('id')
+    def get(request, encode_id):
         decode_data = jwt_decode(encode_id)
         if decode_data is None:
             return render(request, 'qrcode_bad_signature.html')
@@ -102,7 +101,17 @@ class QrcodeView(View):
             data.update({
                 'premium_distribution_ok': True,
             })
-        else:
-            contact_obj.update(premium_distribution_ok=True)
 
         return render(request, 'qrcode_confirm.html', {'data': data})
+
+    @staticmethod
+    def post(request, encode_id):
+        decode_data = jwt_decode(encode_id)
+        if decode_data is None:
+            return render(request, 'qrcode_bad_signature.html')
+
+        contact_obj = SfContact.get_obj_by_line_id(decode_data.get('line_id'))
+
+        contact_obj.update(premium_distribution_ok=True)
+
+        return redirect('/qr/' + encode_id)
