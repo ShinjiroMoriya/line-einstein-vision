@@ -18,13 +18,8 @@ class Command(BaseCommand):
         path = options.get('path')
         name = options.get('name')
         try:
-            result = self.datasets.path_upload(path=path, name=name)
-            print(json_dumps(result))
-            datasets_id = result.get('id')
-            name = result.get('name')
-            result = self.train.create(
-                datasets_id=str(datasets_id), name=str(name))
-            print(json_dumps(result))
-        except Exception as ex:
-            print(ex)
+            self.datasets.path_upload(path=path, name=name)
+        except:
             pass
+
+        print('end')
