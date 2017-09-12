@@ -34,8 +34,6 @@ class CallbackView(LineCallbackView):
 
                     if event.message.text == 'リセット':
                         c.update(character_01_ok=False,
-                                 character_02_ok=False,
-                                 character_03_ok=False,
                                  premium_distribution_ok=False)
                         line_bot_api.reply_message(
                             event.reply_token,
@@ -83,8 +81,6 @@ class CallbackView(LineCallbackView):
 
                         if (
                             c.character_01_ok is True and
-                            c.character_02_ok is True and
-                            c.character_03_ok is True and
                             c.premium_distribution_ok is False
                         ):
                             urls = self.get_qrcode(line_id)
