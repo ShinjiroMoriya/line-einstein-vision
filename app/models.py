@@ -11,6 +11,9 @@ class SfContact(models.Model):
     name = models.CharField(
         max_length=255, null=True, blank=True,
         db_column='name')
+    lastname = models.CharField(
+        max_length=255, null=True, blank=True,
+        db_column='lastname')
     line_id = models.CharField(
         max_length=255, null=True, blank=True,
         db_column='line_id__c')
@@ -40,7 +43,8 @@ class SfContact(models.Model):
         except cls.DoesNotExist:
             profile = get_profile(line_id)
             return cls(line_id=line_id,
-                       name=profile.display_name).save()
+                       name=profile.display_name,
+                       lastname=profile.display_name).save()
 
     @classmethod
     def get_obj_by_line_id(cls, line_id):

@@ -34,13 +34,13 @@ class LineCallbackView(View):
             label = result_list.get('label')
             if label == 'anpanman':
                 contact.update(character_01_ok=True)
-                return 'アンパンマンです。'
+                return 'アンパンマンです。(' + str(probability) + ')'
             elif label == 'doraemon':
                 contact.update(character_02_ok=True)
-                return 'ドラえもんです。'
+                return 'ドラえもんです。(' + str(probability) + ')'
             elif label == 'kitty':
                 contact.update(character_03_ok=True)
-                return 'キティーちゃんです。'
+                return 'キティーちゃんです。(' + str(probability) + ')'
 
             return ''
         else:
