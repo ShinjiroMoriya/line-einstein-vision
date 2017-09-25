@@ -92,6 +92,8 @@ class CallbackView(LineCallbackView):
 
                         if (
                             c.character_01_ok is True and
+                            c.character_02_ok is True and
+                            c.character_03_ok is True and
                             c.premium_distribution_ok is False
                         ):
                             # urls = self.get_qrcode(line_id)
