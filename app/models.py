@@ -1,6 +1,6 @@
 from django.db import models
 from cloudinary import config as cloudinary_config
-from line.cloudinary import image_upload
+from line.cloudinary import set_image_upload
 from line.utilities import get_profile
 
 
@@ -59,7 +59,7 @@ class SfContact(models.Model):
         data_obj = cls.objects.filter(line_id=line_id)
         data = data_obj.values().first()
 
-        image_upload(file, message_id)
+        set_image_upload(file, message_id)
 
         cloudinary_path = ('https://res.cloudinary.com/' +
                            cloudinary_config().cloud_name + '/image/upload/')
