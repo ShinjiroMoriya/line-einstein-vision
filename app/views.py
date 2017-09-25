@@ -17,7 +17,8 @@ class CallbackView(LineCallbackView):
     def post(self, request):
         try:
             events = self.events_parse(request)
-        except:
+        except Exception as ex:
+            print(ex)
             return HttpResponseForbidden()
 
         for event in events:
@@ -36,10 +37,14 @@ class CallbackView(LineCallbackView):
 
                 c = SfContact.get_by_line_id(line_id)
 
+                print(event)
+
                 if event.message.type == 'text':
 
                     if event.message.text == 'リセット':
                         c.update(character_01_ok=False,
+                                 character_02_ok=False,
+                                 character_03_ok=False,
                                  premium_distribution_ok=False)
                         line_bot_api.reply_message(
                             event.reply_token,
