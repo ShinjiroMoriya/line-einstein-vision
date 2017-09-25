@@ -3,6 +3,11 @@ import jwt
 import time
 from datetime import datetime, timedelta
 from django.conf import settings as st
+from logging import getLogger
+
+logger = getLogger('command')
+
+__all__ = ('logger',)
 
 
 def json_loads(data):

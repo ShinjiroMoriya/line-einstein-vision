@@ -6,7 +6,7 @@ from django.conf import settings as st
 from line.utilities import parser
 from line.einstein_vision import Predict
 from line.cloudinary import set_image_upload, get_url
-from line.service import jwt_encode
+from line.service import jwt_encode, logger
 import qrcode
 
 
@@ -44,7 +44,7 @@ class LineCallbackView(View):
             else:
                 label_name = ''
 
-            if result_list.get('probability') > 0.9:
+            if result_list.get('probability') > 0.95:
                 if label == 'friend_01':
                     return ('正解！アストロくんです。({probability})\n\n'
                             'これで練習は完了となります。\n\n'
@@ -71,7 +71,8 @@ class LineCallbackView(View):
                     return '正解！' + label_name + 'です。(' + probability + ')'
             else:
                 return 'この写真は判断できませんでした。'
-        except:
+        except Exception as ex:
+            logger.info(ex)
             return 'この写真は判断できませんでした。'
 
     @staticmethod

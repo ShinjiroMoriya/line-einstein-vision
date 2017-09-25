@@ -2,7 +2,7 @@ from base64 import b64encode
 from django.http import HttpResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from app.models import SfContact
-from line.service import jwt_decode
+from line.service import jwt_decode, logger
 from line.utilities import line_bot_api
 from line.line_view import LineCallbackView, View
 from linebot.models import (MessageEvent, TextSendMessage, FollowEvent,
@@ -18,7 +18,7 @@ class CallbackView(LineCallbackView):
         try:
             events = self.events_parse(request)
         except Exception as ex:
-            print(ex)
+            logger.info(ex)
             return HttpResponseForbidden()
 
         for event in events:
@@ -36,8 +36,6 @@ class CallbackView(LineCallbackView):
             if isinstance(event, MessageEvent):
 
                 c = SfContact.get_by_line_id(line_id)
-
-                print(event)
 
                 if event.message.type == 'text':
 
@@ -70,7 +68,20 @@ class CallbackView(LineCallbackView):
                     message_content = line_bot_api.get_message_content(
                         event.message.id)
                     try:
-                        if c.premium_distribution_ok is False:
+                        if (
+                            c.character_01_ok is True and
+                            c.character_02_ok is True and
+                            c.character_03_ok is True and
+                            c.premium_distribution_ok is False
+                        ):
+                            line_bot_api.reply_message(
+                                event.reply_token,
+                                TextSendMessage(
+                                    text='ご利用ありがとうございました。'
+                                )
+                            )
+
+                        else:
                             SfContact.image_upload_by_line_id(
                                 line_id,
                                 message_content.content,
@@ -83,13 +94,6 @@ class CallbackView(LineCallbackView):
                                 event.reply_token,
                                 TextSendMessage(
                                     text=reply_text
-                                )
-                            )
-                        else:
-                            line_bot_api.reply_message(
-                                event.reply_token,
-                                TextSendMessage(
-                                    text='ご利用ありがとうございました。'
                                 )
                             )
 
@@ -130,7 +134,7 @@ class CallbackView(LineCallbackView):
                             )
 
                     except Exception as ex:
-                        print(ex)
+                        logger.info(ex)
                         return HttpResponse()
 
         return HttpResponse()
