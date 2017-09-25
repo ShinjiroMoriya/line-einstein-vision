@@ -15,7 +15,6 @@ class CallbackView(LineCallbackView):
         return HttpResponse()
 
     def post(self, request):
-        print(request.method)
         try:
             events = self.events_parse(request)
         except Exception as ex:

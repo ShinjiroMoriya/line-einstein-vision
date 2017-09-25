@@ -56,7 +56,7 @@ class LineCallbackView(View):
                             '交換ができます。\n'
                             '皆様、是非チャレンジしてください！\n\n'
                             '※景品と交換できるのは先着3名様までとなります。'
-                            ).format(probability)
+                            ).format(probability=probability)
                 elif label == 'friend_02':
                     contact.update(character_01_ok=True)
                     return '正解！' + label_name + 'です。(' + probability + ')'
