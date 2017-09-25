@@ -25,6 +25,12 @@ class CallbackView(LineCallbackView):
 
             if isinstance(event, FollowEvent):
                 SfContact.create(line_id)
+                line_bot_api.reply_message(
+                    event.reply_token,
+                    TextSendMessage(
+                        text='まずはアストロくんを撮影し、アップロードしてみましょう。'
+                    )
+                )
 
             if isinstance(event, MessageEvent):
 
@@ -46,7 +52,12 @@ class CallbackView(LineCallbackView):
                         line_bot_api.reply_message(
                             event.reply_token,
                             TextSendMessage(
-                                text='画像をアップロードしてください。'
+                                text=('ごめんなさい。\n'
+                                      'このLINEチャットBotは、アップロードされた'
+                                      '画像をEinstein Visionで解析し、一致した答え'
+                                      'を返却する機能をお試しいただけます。\n'
+                                      '※講演でお話したような、文字入力による応答機能'
+                                      'はついていません。')
                             )
                         )
 
@@ -83,7 +94,15 @@ class CallbackView(LineCallbackView):
                             c.character_01_ok is True and
                             c.premium_distribution_ok is False
                         ):
-                            urls = self.get_qrcode(line_id)
+                            # urls = self.get_qrcode(line_id)
+                            # line_bot_api.push_message(
+                            #     line_id,
+                            #     ImageSendMessage(
+                            #         preview_image_url=urls.get('preview'),
+                            #         original_content_url=urls.get('original'),
+                            #     )
+                            # )
+                            urls = self.get_img_urls()
                             line_bot_api.push_message(
                                 line_id,
                                 ImageSendMessage(
@@ -91,11 +110,15 @@ class CallbackView(LineCallbackView):
                                     original_content_url=urls.get('original'),
                                 )
                             )
+
                             line_bot_api.push_message(
                                 line_id,
                                 TextSendMessage(
-                                    text=('担当者に読み取りをお願いしてください。\n'
-                                          'ご自身で読み込むと無効になります。')
+                                    text=('おめでとうございます！\n\n'
+                                          'ミッションコンプリートです。\n'
+                                          'Trailblazer ZoneのTrading Postで'
+                                          '景品と交換しましょう。\n'
+                                          '受付にこのLINE画面をお見せください。')
                                 )
                             )
 
