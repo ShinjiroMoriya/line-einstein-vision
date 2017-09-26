@@ -121,8 +121,6 @@ class CallbackView(View):
             logger.info(ex)
             return HttpResponseForbidden()
 
-        print(events)
-
         for event in events:
             line_id = event.source.sender_id
 
