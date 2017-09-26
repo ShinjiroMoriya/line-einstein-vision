@@ -51,7 +51,7 @@ class CallbackView(View):
             else:
                 label_name = ''
 
-            if result_list.get('probability') > 0.95:
+            if result_list.get('probability') > 0.9:
                 if label == 'friend_01':
                     return ('正解！アストロくんです。({probability})\n\n'
                             'これで練習は完了となります。\n\n'
