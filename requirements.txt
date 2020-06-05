@@ -6,7 +6,7 @@ clint==0.5.1
 cloudinary==1.8.0
 cryptography==1.7.2
 dj-database-url==0.4.2
-Django==1.11.5
+Django==1.11.29
 django-dotenv==1.4.1
 future==0.16.0
 gunicorn==19.7.1
