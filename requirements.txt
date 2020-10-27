@@ -4,7 +4,7 @@ cffi==1.10.0
 chardet==3.0.4
 clint==0.5.1
 cloudinary==1.8.0
-cryptography==1.7.2
+cryptography==3.2
 dj-database-url==0.4.2
 Django==1.11.5
 django-dotenv==1.4.1
