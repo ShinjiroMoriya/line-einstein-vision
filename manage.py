@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 import os
 import sys
-import platform
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "line.settings")
-    if 'local' in platform.node():
+    if os.path.exists('.env'):
         try:
             import dotenv
             dotenv.read_dotenv()

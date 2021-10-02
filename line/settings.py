@@ -20,14 +20,15 @@ WSGI_APPLICATION = 'line.wsgi.application'
 API_VERSION = str(os.environ.get('API_VERSION', 40))
 LINE_ACCESS_TOKEN = os.environ.get('LINE_ACCESS_TOKEN')
 LINE_ACCESS_SECRET = os.environ.get('LINE_ACCESS_SECRET')
-URL = os.environ.get('URL', 'localhost:8000')
 EINSTEIN_VISION_URL = os.environ.get('EINSTEIN_VISION_URL')
 EINSTEIN_VISION_ACCOUNT_ID = os.environ.get('EINSTEIN_VISION_ACCOUNT_ID')
-EINSTEIN_VISION_API_VERSION = os.environ.get('EINSTEIN_VISION_API_VERSION')
-EINSTEIN_VISION_MODELID = os.environ.get('EINSTEIN_VISION_MODELID')
+EINSTEIN_VISION_API_VERSION = os.environ.get(
+    'EINSTEIN_VISION_API_VERSION', 'v2')
+EINSTEIN_VISION_MODEL_ID = os.environ.get('EINSTEIN_VISION_MODEL_ID')
 
 if not os.environ.get('EINSTEIN_VISION_PRIVATE_KEY'):
     try:
+        # 開発環境ではkeyファイルを用意する
         with open(BASE_DIR + '/einstein_private.key', 'r') as pf:
             private_key = pf.read()
     except:
@@ -43,37 +44,12 @@ if DEBUG:
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
     'app',
 ]
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+MIDDLEWARE = []
 
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.contrib.auth.context_processors.auth',
-            ],
-        },
-    },
-]
+TEMPLATES = []
 
 if TESTING:
     DATABASES = {
@@ -83,15 +59,11 @@ if TESTING:
         }
     }
 else:
-    db = dj_database_url.parse(os.environ.get('DATABASE_URL') +
-                               '?currentSchema=salesforce,public')
-    try:
-        del db['OPTIONS']['currentSchema']
-    except:
-        pass
-
     DATABASES = {
-        'default': db
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL')),
+    }
+    DATABASES['default']['OPTIONS'] = {
+        'options': '-c search_path=public,salesforce'
     }
 
 LOGGING = {

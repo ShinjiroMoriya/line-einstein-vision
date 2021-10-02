@@ -7,7 +7,7 @@ from logging import getLogger
 
 logger = getLogger('command')
 
-__all__ = ('logger',)
+__all__ = ('logger', 'json_loads', 'json_dumps', 'jwt_encode', 'jwt_decode',)
 
 
 def json_loads(data):

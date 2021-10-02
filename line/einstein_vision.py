@@ -221,7 +221,7 @@ class Predict(EinsteinVisionApi):
         """Prediction with Image Base64 String"""
         req_url = '/vision/predict'
         fields = {
-            'modelId': st.EINSTEIN_VISION_MODELID,
+            'modelId': st.EINSTEIN_VISION_MODEL_ID,
             'sampleBase64Content': image,
         }
         return self.post_requests(req_url, fields)
@@ -232,7 +232,7 @@ class Predict(EinsteinVisionApi):
             return None
         req_url = '/vision/predict'
         fields = {
-            'modelId': st.EINSTEIN_VISION_MODELID,
+            'modelId': st.EINSTEIN_VISION_MODEL_ID,
             'sampleContent': ('file', open(path, 'rb'),
                               'application/octet-stream'),
         }
