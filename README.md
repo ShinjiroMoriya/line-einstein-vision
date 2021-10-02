@@ -25,9 +25,11 @@ EINSTEIN_VISIONのセットアップ内容
 `python manage.py datasets_confirm 1234567(datasets_id)`
 
 モデルを作成
+
 `python manage.py train_create 1234567(datasets_id)`
 
 モデルが作成されたか確認
+
 `python manage.py train_confirm H55EZDPXXMSPR7KXRHKMQMOCPQ(model_id)`
 
-完了後、ModelIDをEINSTEIN_VISION_MODEL_IDにセットする
+完了後、ModelIDをEINSTEIN_VISION_MODEL_IDをセットする
