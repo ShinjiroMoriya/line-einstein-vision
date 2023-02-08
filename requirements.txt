@@ -6,7 +6,7 @@ chardet==4.0.0
 charset-normalizer==2.0.6
 clint==0.5.1
 cloudinary==1.26.0
-cryptography==35.0.0
+cryptography==39.0.1
 dj-database-url==0.5.0
 Django==3.2.7
 django-dotenv==1.4.2
